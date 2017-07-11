@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
+import Search from './component/Search';
+import Table from './component/Table';
 import './App.css';
+
 const list = [
   {
     title: 'React',
@@ -16,14 +19,17 @@ const list = [
     num_comments: 2,
     points: 5,
     objectID: 1,
+  },
+  {
+    title: 'Redux1',
+    url: 'https://github.com/reactjs/redux',
+    author: 'Dan Abramov, Andrew Clark',
+    num_comments: 21,
+    points: 51,
+    objectID: 2,
   }
 ];
-function isSearched(searchTerm) {
-  return function (item) {
-    return !searchTerm ||
-      item.title.toLowerCase().includes(searchTerm.toLowerCase());
-  }
-}
+
 
 
 class App extends Component {
@@ -33,49 +39,37 @@ class App extends Component {
       list,
       searchTerm: '',
     }
-    this.onDismiss = this.onDismiss.bind(this);
-    this.onSearchChange = this.onSearchChange.bind(this);
+    this.onDismess = this.onDismess.bind(this);
+    this.OnSearchChange = this.OnSearchChange.bind(this);
   }
-  onDismiss(id) {
+  //onDismess
+  onDismess(id) {
     function isNotId(item) {
       return item.objectID !== id;
     }
-    const updateList = this.state.list.filter(isNotId);
-    this.setState({ list: updateList });
+    const updatList = this.state.list.filter(isNotId);
+    this.setState({ list: updatList });
   }
-  onSearchChange(event) {
-    this.setState({ searchTerm: event.target.value });
+  //OnSearchChange
+  OnSearchChange(event) {
+    this.setState({ searchTerm: event.target.value })
+  }
 
-  }
   render() {
     return (
       <div className='App'>
-        <form>
-          <input type='text'
-            onChange={this.onSearchChange}
+        <Search
+          value={this.state.searchTerm}
+          onChange={this.OnSearchChange} />
+        <Table
+          list={this.state.list}
+          pattern={this.state.searchTerm}
+          onDismess = {this.onDismess}
           />
-        </form>
-        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item =>
-          <div key={item.objectID}>
-            <span><a href={item.url}>{item.title}</a></span>
-            <span>{item.author},</span>
-            <span>{item.num_comments},</span>
-            <span>{item.points}</span>
-            <span>
-              <button
-                onClick={() => this.onDismiss(item.objectID)}
-                type='button'
-              >
-                Dismiss
-              </button>
-            </span>
-
-          </div>
-        )}
-
       </div>
     )
   }
+
 }
 
 export default App;
