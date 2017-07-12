@@ -33,10 +33,10 @@ function isSearch(searchTerm) {
     }
 }*/
 
-function Table({ list, pattern, onDismiss }) {
+function Table({ list, onDismiss }) {
     return (
         <div className="table">
-            {list.filter(isSearch(pattern)).map(item =>
+            {list.map(item =>
                 <div key={item.objectID} className="table-row">
                     <span style={{ width: '40%' }}>
                         <a href={item.url}>Title :{item.title}</a>
