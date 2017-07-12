@@ -39,16 +39,16 @@ function Table({ list, pattern, onDismiss }) {
             {list.filter(isSearch(pattern)).map(item =>
                 <div key={item.objectID} className="table-row">
                     <span style={{ width: '40%' }}>
-                        <a href={item.url}>{item.title}</a>
+                        <a href={item.url}>Title :{item.title}</a>
                     </span>
                     <span style={{ width: '30%' }}>
-                        {item.author}
+                        Author :{item.author}
                     </span>
                     <span style={{ width: '10%' }}>
-                        {item.num_comments}
+                        Comments :{item.num_comments}
                     </span>
                     <span style={{ width: '10%' }}>
-                        {item.points}
+                        Points :{item.points}
                     </span>
                     <span style={{ width: '10%' }}>
                         <Button

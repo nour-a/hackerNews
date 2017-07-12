@@ -3,33 +3,12 @@ import Search from './component/Search';
 import Table from './component/Table';
 import './App.css';
 
-const list = [
-  {
-    title: 'React',
-    url: 'https://facebook.github.io/react/',
-    author: 'Jordan Walke',
-    num_comments: 3,
-    points: 4,
-    objectID: 0,
-  },
-  {
-    title: 'Redux',
-    url: 'https://github.com/reactjs/redux',
-    author: 'Dan Abramov, Andrew Clark',
-    num_comments: 2,
-    points: 5,
-    objectID: 1,
-  },
-  {
-    title: 'Redux1',
-    url: 'https://github.com/reactjs/redux',
-    author: 'Dan Abramov, Andrew Clark',
-    num_comments: 21,
-    points: 51,
-    objectID: 2,
-  }
-];
+const DEFAULT_QUERY = 'redux';
+const PATH_BASE = 'https://hn.algolia.com/api/v1';
+const PATH_SEARCH = '/search';
+const PARAM_SEARCH = 'query=';
 
+//isSearched
 function isSearched(searchTerm) {
   return function (item) {
     return !searchTerm ||
@@ -41,19 +20,37 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      list,
-      searchTerm: '',
+      result: null,
+      searchTerm: DEFAULT_QUERY,
     }
+    this.setSearchTopstories = this.setSearchTopstories.bind(this);
+    this.fetchSearchTopstories = this.fetchSearchTopstories.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
     this.OnSearchChange = this.OnSearchChange.bind(this);
   }
+  //setSearchTopstories
+  setSearchTopstories(result) {
+    this.setState({ result });
+  }
+  //fetchSearchTopstories
+  fetchSearchTopstories(searchTerm) {
+    fetch(`${PATH_BASE}${PATH_SEARCH}?${PARAM_SEARCH}${searchTerm}`)
+      .then(response => response.json())
+      .then(result => this.setSearchTopstories(result))
+      .catch(e => e);
+  }
+  //componentDidMount
+  componentDidMount() {
+    const { searchTerm } = this.state;
+    this.fetchSearchTopstories(searchTerm);
+  }
   //onDismess
   onDismiss(id) {
-    function isNotId(item) {
-      return item.objectID !== id;
-    }
-    const updatList = this.state.list.filter(isNotId);
-    this.setState({ list: updatList });
+    const isNotId = item => item.objectID !== id;
+    const updatedHits = this.state.result.hits.filter(isNotId);
+    this.setState({
+      result: Object.assign({}, this.state.result, { hits: updatedHits })
+    });
   }
   //OnSearchChange
   OnSearchChange(event) {
@@ -61,7 +58,8 @@ class App extends Component {
   }
 
   render() {
-    //const { searchTerm, list } = this.state;
+
+    if (!this.state.result) { return null; }
     return (
       <div className="page">
         <div className="interactions">
@@ -70,14 +68,14 @@ class App extends Component {
             onChange={this.OnSearchChange} >
             Search:
           </Search>
-          </div>
-          <Table
-            list={this.state.list}
-            pattern={this.state.searchTerm}
-            onDismiss={this.onDismiss}
-          />
         </div>
-        );
+        <Table
+          list={this.state.result.hits}
+          pattern={this.state.searchTerm}
+          onDismiss={this.onDismiss}
+        />
+      </div>
+    );
   }
 
 }
@@ -126,4 +124,4 @@ class Table extends Component {
   }
 }*/
 
-  export default App;
+export default App;
