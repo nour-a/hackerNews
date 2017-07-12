@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Button extends Component {
+/*class Button extends Component {
     render() {
         return (
             <button
@@ -11,6 +11,19 @@ class Button extends Component {
             </button>
         );
     }
+}*/
+
+function Button({onClick,children, }) {
+
+    return (
+        <button
+            onClick={onClick}
+            type="button"
+        >
+            {children}
+        </button>
+    );
+
 }
 
 export default Button;
