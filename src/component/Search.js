@@ -1,6 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Search extends Component {
+/*class Search extends Component {
     render() {
         return (
             <form>
@@ -12,6 +12,20 @@ class Search extends Component {
             </form>
         );
     }
-}
+}*/
 
+
+function Search({ value, onChange, children }) {
+    return (
+        <form>
+            {children} <input
+                type="text"
+                value={value}
+                onChange={onChange}
+            />
+        </form>
+    );
+}
 export default Search;
+
+
