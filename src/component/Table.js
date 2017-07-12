@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
+import Button from './Button'
 
 //isSearch
 function isSearch(searchTerm) {
-  return function (item) {
-    return !searchTerm ||
-      item.title.toLowerCase().includes(searchTerm.toLowerCase());
-  }
+    return function (item) {
+        return !searchTerm ||
+            item.title.toLowerCase().includes(searchTerm.toLowerCase());
+    }
 }
 class Table extends Component {
     render() {
@@ -20,12 +21,9 @@ class Table extends Component {
                         <span>{item.num_comments}</span>
                         <span>{item.points}</span>
                         <span>
-                            <button
-                                onClick={() => this.props.onDismiss(item.objectID)}
-                                type="button"
-                            >
+                            <Button onClick={() => this.props.onDismiss(item.objectID)}>
                                 Dismiss
-                            </button>
+                            </Button>
                         </span>
                     </div>
                 )}

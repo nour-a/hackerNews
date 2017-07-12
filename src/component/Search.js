@@ -4,7 +4,7 @@ class Search extends Component {
     render() {
         return (
             <form>
-                <input
+                {this.props.children}<input
                     type="text"
                     value={this.props.value}
                     onChange={this.props.onChange}
